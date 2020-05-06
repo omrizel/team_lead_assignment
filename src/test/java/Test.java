@@ -1,3 +1,4 @@
+import org.apache.commons.io.FileUtils;
 import org.jfrog.artifactory.client.model.File;
 import org.jfrog.artifactory.client.model.Repository;
 import org.jfrog.artifactory.client.model.User;
@@ -25,7 +26,7 @@ public class Test extends AbstractTest {
         Assert.assertTrue(artifactory.system().ping());
     }
 
-    @org.testng.annotations.Test
+    @org.testng.annotations.Test(dependsOnMethods = "pingArtifactory")
     public void createRepo() {
         DebianRepositorySettingsImpl settings = new DebianRepositorySettingsImpl();
         settings.setDebianTrivialLayout(true);
@@ -49,7 +50,7 @@ public class Test extends AbstractTest {
         Assert.assertEquals(result.getDownloadUri(), artifactoryUrl + "/" + repoName + "/folder12/newFile.txt");
     }
 
-    @org.testng.annotations.Test
+    @org.testng.annotations.Test(dependsOnMethods = "pingArtifactory")
     public void addUser() {
         UserBuilder userBuilder = artifactory.security().builders().userBuilder();
         User user = userBuilder.name(newUserName)
@@ -64,7 +65,7 @@ public class Test extends AbstractTest {
         Collection<String> collectionOfUserNames = artifactory.security().userNames();
         boolean found = false;
         for (String newUser : collectionOfUserNames) {
-            if (newUser.equals("omritest1234")) {
+            if (newUser.equals(newUserName.toLowerCase())) {
                 found = true;
                 break;
             }
@@ -73,11 +74,10 @@ public class Test extends AbstractTest {
     }
 
     @org.testng.annotations.Test(dependsOnMethods = {"addUser", "uploadFile"})
-    public void downloadFile() throws InterruptedException {
+    public void downloadFile() throws InterruptedException, IOException {
         artifactory = ArtifactoryConnection.createArtifactory(newUserName, "password", artifactoryUrl);
         InputStream iStream = artifactory.repository(repoName)
                 .download("/folder12/newFile.txt")
                 .doDownload();
-        // verify the file actually been loaded : use last downloaded by
     }
 }
