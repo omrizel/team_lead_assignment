@@ -48,7 +48,9 @@ public class Test extends AbstractTest {
     @org.testng.annotations.Test(dependsOnMethods = "createRepo")
     public void uploadFile() throws IOException {
         System.out.println("**************TEST3*******************");
+        System.out.println("before java.io.file");
         java.io.File file = new java.io.File("newFile.txt");
+        System.out.println("after java.io.file");
         File result = artifactory.repository(repoName).upload("folder12/newFile.txt", file).doUpload();
         Assert.assertEquals(result.getDownloadUri(), artifactoryUrl + "/" + repoName + "/folder12/newFile.txt");
     }
