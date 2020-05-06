@@ -23,13 +23,11 @@ public class Test extends AbstractTest {
 
     @org.testng.annotations.Test
     public void pingArtifactory() {
-        System.out.println("**************TEST1*******************");
         Assert.assertTrue(artifactory.system().ping());
     }
 
     @org.testng.annotations.Test(dependsOnMethods = "pingArtifactory")
     public void createRepo() {
-        System.out.println("**************TEST2*******************");
         DebianRepositorySettingsImpl settings = new DebianRepositorySettingsImpl();
         settings.setDebianTrivialLayout(true);
 
@@ -46,37 +44,14 @@ public class Test extends AbstractTest {
     }
 
     @org.testng.annotations.Test(dependsOnMethods = "createRepo")
-    public void uploadFile()  {
-        System.out.println("**************TEST3*******************");
-        DebianRepositorySettingsImpl settings = new DebianRepositorySettingsImpl();
-        settings.setDebianTrivialLayout(true);
-
-        Repository repository = artifactory.repositories()
-                .builders()
-                .localRepositoryBuilder()
-                .key(repoName)
-                .description("new local repository omri")
-                .repositorySettings(settings)
-                .build();
-
-        String result = artifactory.repositories().create(2, repository);
-        Assert.assertEquals(result, "Successfully created repository '" + repoName + "' \n");
-      /* System.out.println("before try");
-        try{
-            java.io.File file = new java.io.File("newFile.txt");
-            File result = artifactory.repository(repoName).upload("folder12/newFile.txt", file).doUpload();
-            Assert.assertEquals(result.getDownloadUri(), artifactoryUrl + "/" + repoName + "/folder12/newFile.txt");
-        } catch (Exception e){
-            System.out.println("EXCEPTION!!!! "+e);
-        }
-*/
-        System.out.println("after catch");
-
+    public void uploadFile() throws IOException {
+        java.io.File file = new java.io.File("newFile.txt");
+        File result = artifactory.repository(repoName).upload("folder12/newFile.txt", file).doUpload();
+        Assert.assertEquals(result.getDownloadUri(), artifactoryUrl + "/" + repoName + "/folder12/newFile.txt");
     }
 
     @org.testng.annotations.Test(dependsOnMethods = "pingArtifactory")
     public void addUser() {
-        System.out.println("**************TEST4*******************");
         UserBuilder userBuilder = artifactory.security().builders().userBuilder();
         User user = userBuilder.name(newUserName)
                 .email(newUserName + "@mail.com")
@@ -99,11 +74,10 @@ public class Test extends AbstractTest {
     }
 
     @org.testng.annotations.Test(dependsOnMethods = {"addUser", "uploadFile"})
-    public void downloadFile()  {
-        System.out.println("**************TEST5*******************");
-      /*  artifactory = ArtifactoryConnection.createArtifactory(newUserName, "password", artifactoryUrl);
+    public void downloadFile() throws InterruptedException, IOException {
+        artifactory = ArtifactoryConnection.createArtifactory(newUserName, "password", artifactoryUrl);
         InputStream iStream = artifactory.repository(repoName)
                 .download("/folder12/newFile.txt")
-                .doDownload();*/
+                .doDownload();
     }
 }
