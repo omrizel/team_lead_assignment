@@ -46,7 +46,7 @@ public class Test extends AbstractTest {
     }
 
     @org.testng.annotations.Test(dependsOnMethods = "createRepo")
-    public void uploadFile() throws IOException {
+    public void uploadFile()  {
         System.out.println("**************TEST3*******************");
         System.out.println("before try");
         try{
@@ -86,7 +86,7 @@ public class Test extends AbstractTest {
     }
 
     @org.testng.annotations.Test(dependsOnMethods = {"addUser", "uploadFile"})
-    public void downloadFile() throws InterruptedException, IOException {
+    public void downloadFile()  {
         System.out.println("**************TEST5*******************");
         artifactory = ArtifactoryConnection.createArtifactory(newUserName, "password", artifactoryUrl);
         InputStream iStream = artifactory.repository(repoName)
