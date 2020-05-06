@@ -48,7 +48,20 @@ public class Test extends AbstractTest {
     @org.testng.annotations.Test(dependsOnMethods = "createRepo")
     public void uploadFile()  {
         System.out.println("**************TEST3*******************");
-       System.out.println("before try");
+        DebianRepositorySettingsImpl settings = new DebianRepositorySettingsImpl();
+        settings.setDebianTrivialLayout(true);
+
+        Repository repository = artifactory.repositories()
+                .builders()
+                .localRepositoryBuilder()
+                .key(repoName)
+                .description("new local repository omri")
+                .repositorySettings(settings)
+                .build();
+
+        String result = artifactory.repositories().create(2, repository);
+        Assert.assertEquals(result, "Successfully created repository '" + repoName + "' \n");
+      /* System.out.println("before try");
         try{
             java.io.File file = new java.io.File("newFile.txt");
             File result = artifactory.repository(repoName).upload("folder12/newFile.txt", file).doUpload();
@@ -56,7 +69,7 @@ public class Test extends AbstractTest {
         } catch (Exception e){
             System.out.println("EXCEPTION!!!! "+e);
         }
-
+*/
         System.out.println("after catch");
 
     }
