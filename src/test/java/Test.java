@@ -48,7 +48,7 @@ public class Test extends AbstractTest {
     @org.testng.annotations.Test(dependsOnMethods = "createRepo")
     public void uploadFile()  {
         System.out.println("**************TEST3*******************");
-       /* System.out.println("before try");
+       System.out.println("before try");
         try{
             java.io.File file = new java.io.File("newFile.txt");
             File result = artifactory.repository(repoName).upload("folder12/newFile.txt", file).doUpload();
@@ -57,7 +57,7 @@ public class Test extends AbstractTest {
             System.out.println("EXCEPTION!!!! "+e);
         }
 
-        System.out.println("after catch");*/
+        System.out.println("after catch");
 
     }
 
