@@ -23,11 +23,13 @@ public class Test extends AbstractTest {
 
     @org.testng.annotations.Test
     public void pingArtifactory() {
+        System.out.println("**************TEST1*******************");
         Assert.assertTrue(artifactory.system().ping());
     }
 
     @org.testng.annotations.Test(dependsOnMethods = "pingArtifactory")
     public void createRepo() {
+        System.out.println("**************TEST2*******************");
         DebianRepositorySettingsImpl settings = new DebianRepositorySettingsImpl();
         settings.setDebianTrivialLayout(true);
 
@@ -45,13 +47,15 @@ public class Test extends AbstractTest {
 
     @org.testng.annotations.Test(dependsOnMethods = "createRepo")
     public void uploadFile() throws IOException {
+        System.out.println("**************TEST3*******************");
         java.io.File file = new java.io.File("newFile.txt");
         File result = artifactory.repository(repoName).upload("folder12/newFile.txt", file).doUpload();
-        //Assert.assertEquals(result.getDownloadUri(), artifactoryUrl + "/" + repoName + "/folder12/newFile.txt");
+        Assert.assertEquals(result.getDownloadUri(), artifactoryUrl + "/" + repoName + "/folder12/newFile.txt");
     }
 
     @org.testng.annotations.Test(dependsOnMethods = "pingArtifactory")
     public void addUser() {
+        System.out.println("**************TEST4*******************");
         UserBuilder userBuilder = artifactory.security().builders().userBuilder();
         User user = userBuilder.name(newUserName)
                 .email(newUserName + "@mail.com")
@@ -75,6 +79,7 @@ public class Test extends AbstractTest {
 
     @org.testng.annotations.Test(dependsOnMethods = {"addUser", "uploadFile"})
     public void downloadFile() throws InterruptedException, IOException {
+        System.out.println("**************TEST5*******************");
         artifactory = ArtifactoryConnection.createArtifactory(newUserName, "password", artifactoryUrl);
         InputStream iStream = artifactory.repository(repoName)
                 .download("/folder12/newFile.txt")
