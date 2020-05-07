@@ -74,11 +74,11 @@ public class Test extends AbstractTest {
         Assert.assertTrue(found);
     }
 
-    @org.testng.annotations.Test(dependsOnMethods = {"addUser", "uploadFile"})
+  /*  @org.testng.annotations.Test(dependsOnMethods = {"addUser", "uploadFile"})
     public void downloadFile() throws InterruptedException, IOException {
         artifactory = ArtifactoryConnection.createArtifactory(newUserName, "password", artifactoryUrl);
         InputStream iStream = artifactory.repository(repoName)
                 .download("/folder12/newFile.txt")
                 .doDownload();
-    }
+    }*/
 }
