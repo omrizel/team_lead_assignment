@@ -1,0 +1,30 @@
+version: '3'
+services:
+
+  mysql:
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 300sel077
+    ports:
+      - 3306:3306
+
+
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-pro:latest
+    container_name: artifactory-compose
+    ports:
+      - 8081:8081
+      - 8082:8082
+    depends_on:
+      - mysql
+    links:
+      - mysql
+
+  jenkins:
+    image: jenkins/jenkins:jdk11
+    container_name: jenkins11
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - /home/vagrant/jenkins/:/var/jenkins_home
