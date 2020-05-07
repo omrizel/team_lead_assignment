@@ -45,10 +45,9 @@ public class Test extends AbstractTest {
 
     @org.testng.annotations.Test(dependsOnMethods = "createRepo")
     public void uploadFile() throws IOException {
-
-            java.io.File file = new java.io.File("newFile.txt");
-             File result = artifactory.repository(repoName).upload("folder12/newFile.txt", file).doUpload();
-            //Assert.assertEquals(result.getDownloadUri(), artifactoryUrl + "/" + repoName + "/folder12/newFile.txt");
+        java.io.File file = new java.io.File("newFile.txt");
+        File result = artifactory.repository(repoName).upload("folder12/newFile.txt", file).doUpload();
+        Assert.assertEquals(result.getDownloadUri(), artifactoryUrl + "/" + repoName + "/folder12/newFile.txt");
     }
 
     @org.testng.annotations.Test(dependsOnMethods = "pingArtifactory")
@@ -74,11 +73,11 @@ public class Test extends AbstractTest {
         Assert.assertTrue(found);
     }
 
-  /*  @org.testng.annotations.Test(dependsOnMethods = {"addUser", "uploadFile"})
+    @org.testng.annotations.Test(dependsOnMethods = {"addUser", "uploadFile"})
     public void downloadFile() throws InterruptedException, IOException {
         artifactory = ArtifactoryConnection.createArtifactory(newUserName, "password", artifactoryUrl);
         InputStream iStream = artifactory.repository(repoName)
                 .download("/folder12/newFile.txt")
                 .doDownload();
-    }*/
+    }
 }
